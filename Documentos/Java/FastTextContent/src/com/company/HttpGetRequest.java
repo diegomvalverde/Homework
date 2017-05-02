@@ -8,7 +8,7 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class HttpGetRequest
+class HttpGetRequest
 {
 
     private final String USER_AGENT = "Mozilla/5.0";
@@ -16,18 +16,18 @@ public class HttpGetRequest
 
     void getRequest(String tmp) throws Exception {                          // Metodo para realizar un request a Google.
 
-        String url = "http://www.google.com/search?q=" + tmp;
+        String url = "http://www.google.com/search?q=" + tmp;               // Url con la que llamamos al Google
 
-        URL obj = new URL(url);
+        URL obj = new URL(url);                                             // Objeto URL
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         // optional default is GET
-        con.setRequestMethod("GET");
+        con.setRequestMethod("GET");                                        // Pedimos la info del servidor
 
         //add request header
-        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("User-Agent", USER_AGENT);                // Le enviamos la info del "Navegador"
 
-        int responseCode = con.getResponseCode();
+        int responseCode = con.getResponseCode();                           // Obtenemos lo que devuelve Google
         System.out.println("\nSending 'GET' request to URL : " + url);
         System.out.println("Response Code : " + responseCode);
 
