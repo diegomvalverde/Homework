@@ -2,15 +2,20 @@ package com.company;
 
 import javax.swing.*;
 
-public class Interface {
-    private JPanel panel1;
+public class Interface extends JFrame
+{
+    private JPanel PrincipalWindow;
+    private JTextField TextToFind;
+    private JButton FindButton;
+    private JPanel HtmlViewer;
+    private JScrollBar HtmlViewerScroll;
 
-    public void showPanel()
+    void showPanel()
     {
-        panel1.setVisible(true);
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
+        JFrame PrincipalFrame = new JFrame();
+        PrincipalFrame.add(PrincipalWindow);
+        PrincipalFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        PrincipalFrame.pack();
+        PrincipalFrame.setVisible(true);
     }
 }
