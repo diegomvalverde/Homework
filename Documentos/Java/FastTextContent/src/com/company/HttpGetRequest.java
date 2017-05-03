@@ -8,7 +8,6 @@ import java.net.URL;
 
 class HttpGetRequest extends Thread
 {
-    private final String USER_AGENT = "Mozilla/5.0";
     private String StringToFind;
 
     public void run()
@@ -24,6 +23,7 @@ class HttpGetRequest extends Thread
             con.setRequestMethod("GET");                                        // Pedimos la info del servidor
 
             //add request header
+            String USER_AGENT = "Mozilla/5.0";
             con.setRequestProperty("User-Agent", USER_AGENT);                // Le enviamos la info del "Navegador"
 
             int responseCode = con.getResponseCode();                           // Obtenemos lo que devuelve Google
@@ -39,6 +39,7 @@ class HttpGetRequest extends Thread
                 response.append(inputLine);
             }
             in.close();
+            response.delete(1,10);
 
             // Generando un objeto html
             MyHtml tmp = new MyHtml();

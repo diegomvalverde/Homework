@@ -32,9 +32,8 @@ public class CacheMemory extends Observable
     {
         if (!CacheDictionary.containsKey(pKey)) {
             CacheDictionary.put(pKey, pValue);
-            System.out.println("Abriendo la puerta");
             setChanged();
-            this.notifyObservers();
+            this.notifyObservers(pValue);
         }
     }
 
