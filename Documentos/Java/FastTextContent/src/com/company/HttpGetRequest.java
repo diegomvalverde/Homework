@@ -1,49 +1,67 @@
 package com.company;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.net.ssl.HttpsURLConnection;
 
-
-class HttpGetRequest
+class HttpGetRequest extends Thread
 {
-
     private final String USER_AGENT = "Mozilla/5.0";
+    private String StringToFind;
 
+    public void run()
+    {
 
-    void getRequest(String tmp) throws Exception {                          // Metodo para realizar un request a Google.
+        String url = "http://www.google.com/search?q=" + StringToFind;               // Url con la que llamamos al Google
+        try {
+            sleep(1);
+            URL obj = new URL(url);                                             // Objeto URL
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-        String url = "http://www.google.com/search?q=" + tmp;               // Url con la que llamamos al Google
+            // optional default is GET
+            con.setRequestMethod("GET");                                        // Pedimos la info del servidor
 
-        URL obj = new URL(url);                                             // Objeto URL
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            //add request header
+            con.setRequestProperty("User-Agent", USER_AGENT);                // Le enviamos la info del "Navegador"
 
-        // optional default is GET
-        con.setRequestMethod("GET");                                        // Pedimos la info del servidor
+            int responseCode = con.getResponseCode();                           // Obtenemos lo que devuelve Google
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
 
-        //add request header
-        con.setRequestProperty("User-Agent", USER_AGENT);                // Le enviamos la info del "Navegador"
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
 
-        int responseCode = con.getResponseCode();                           // Obtenemos lo que devuelve Google
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
 
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
+            // Generando un objeto html
+            MyHtml tmp = new MyHtml();
+            tmp.setName(StringToFind);
+            tmp.setHtml(response.toString());
 
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+            CacheMemory cache = CacheMemory.getInstance();
+            cache.add(StringToFind, tmp);
+
+            //print result
+            System.out.println(response.toString());
+        }catch(IOException | InterruptedException e)
+        {
+            e.printStackTrace();
         }
-        in.close();
 
-        //print result
-        System.out.println(response.toString());
+    }
 
+
+
+    void getRequest(String pTmp)
+    {
+        this.StringToFind = pTmp;
     }
 
 

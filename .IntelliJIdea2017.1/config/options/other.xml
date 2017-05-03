@@ -6,10 +6,16 @@
           <State>
             <id />
           </State>
+          <State>
+            <id>Code maturity issuesJava</id>
+          </State>
+          <State>
+            <id>Java</id>
+          </State>
         </expanded-state>
         <selected-state>
           <State>
-            <id>Spelling</id>
+            <id>ThrowablePrintedToSystemOut</id>
           </State>
         </selected-state>
       </profile-state>

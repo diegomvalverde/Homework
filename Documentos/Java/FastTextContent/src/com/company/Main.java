@@ -2,16 +2,13 @@ package com.company;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
-//	    Interface tmp = new Interface();
-//	    tmp.showPanel();
-        HttpGetRequest http = new HttpGetRequest();
+    public static void main(String[] args)
+    {
+        Interface tmp = new Interface();
+        tmp.showPanel();
+        CacheMemory cache = CacheMemory.getInstance();
+        cache.addObserver(tmp);
 
-        System.out.println("Testing 1 - Send Http GET request");
-        http.getRequest("Hola");
-
-        System.out.println("\nTesting 2 - Send Http POST request");
-        http.getRequest("Avion");
 
     }
 }
