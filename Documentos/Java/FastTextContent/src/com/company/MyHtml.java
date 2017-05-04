@@ -1,10 +1,11 @@
 package com.company;
 
-public class MyHtml {
+class MyHtml {
     private String Name;
     private String Html;
+    private long Tiempo = 0;
 
-    public String getName() {
+    String getName() {
         return Name;
     }
 
@@ -12,11 +13,19 @@ public class MyHtml {
         Name = name;
     }
 
-    public String getHtml() {
+    String getHtml() {
         return Html;
     }
 
     void setHtml(String html) {
         Html = html;
+    }
+
+    long getTiempo() {
+        return Tiempo;
+    }
+
+    void setTiempo(long tiempo) {
+        Tiempo = tiempo;
     }
 }

@@ -1,5 +1,8 @@
 package com.company;
 
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Observable;
@@ -62,44 +65,24 @@ public class Interface implements Observer
 
     private void addHtml(MyHtml pHtml)
     {
-//        JLabel lab1 = new JLabel();
-//        HtmlViewer.add(lab1);
-//
-//        lab1.setText(pHtml.getHtml());
-//        lab1.setBackground(Color.black);
-//        lab1.setBounds(new Rectangle(40,40,ScreenX,50)); // Le asignamos las dimensiones al label
-//        lab1.setLocation(PosHtmlViewer,0);// le asignamos la posicion al label
-//        lab1.setOpaque(true);
+        Browser browser = new Browser();
+        BrowserView browserView = new BrowserView(browser);
 
-//        JEditorPane pane = new JEditorPane();
-//        pane.setEditable(false);
-//        HTMLEditorKit editorKit;
-//        editorKit = new HTMLEditorKit();
-//        pane.setEditorKit (editorKit) ;
-//        pane.setSize(size);
-//        pane.setMinimumSize(size);
-//        pane.setMaximumSize(size);
-//        pane.setOpaque(true);
-//        System.out.println(pHtml.getHtml());
-//        pane.setText(pHtml.getHtml());
-//        HtmlViewer.add(pane, BorderLayout.CENTER);
-//
-//        HtmlViewer.repaint();
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-//        JFrame tmp = new JFrame();
-        JEditorPane jep = new JEditorPane();
-//        tmp.add(jep);
-        jep.setEditable(false);
-
-        jep.setText(pHtml.getHtml());
-
-        JScrollPane scrollPane = new JScrollPane(jep);
-        JFrame f = new JFrame("Test HTML");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().add(scrollPane);
-        f.setPreferredSize(new Dimension(800,600));
-        f.setVisible(true);
-//        tmp.setExtendedState(MAXIMIZED_BOTH);
-//        tmp.setVisible(true);
+        frame.add(browserView, BorderLayout.CENTER);
+        frame.setSize(700, 500);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        browser.loadHTML(pHtml.getHtml());
+        JLabel tmp = new JLabel();
+        tmp.setText("Palabra buscada: " + pHtml.getName() + "   Tiempo de espera: " + pHtml.getTiempo() + " Milisegundos" + "     Se ha creado una ventana con la busqueda");
+        HtmlViewer.add(tmp);
+        tmp.setSize(1366, 30);
+        tmp.setLocation(0,PosHtmlViewer);
+        HtmlViewer.repaint();
+        PosHtmlViewer += 20;
     }
+
 }

@@ -15,6 +15,9 @@ class HttpGetRequest extends Thread
 
         String url = "http://www.google.com/search?q=" + StringToFind;               // Url con la que llamamos al Google
         try {
+            long time_start, time_end;
+            time_start = System.currentTimeMillis();
+
             sleep(1);
             URL obj = new URL(url);                                             // Objeto URL
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -45,6 +48,11 @@ class HttpGetRequest extends Thread
             MyHtml tmp = new MyHtml();
             tmp.setName(StringToFind);
             tmp.setHtml(response.toString());
+
+            time_end = System.currentTimeMillis();
+            long horatmp = time_end - time_start;
+            System.out.println(horatmp);
+            tmp.setTiempo(horatmp);
 
             CacheMemory cache = CacheMemory.getInstance();
             cache.add(StringToFind, tmp);
