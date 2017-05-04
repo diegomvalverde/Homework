@@ -22,23 +22,30 @@ public class CacheMemory extends Observable
 
     MyHtml get(String pKey)
     {
-        System.out.println("Abriendo la puerta");
-        setChanged();
-        this.notifyObservers();
-        return CacheDictionary.get(pKey);
+//        System.out.println("Abriendo la puerta");
+//        notifyToInterface(pKey);
+//        return CacheDictionary.get(pKey);
+        return getCacheDictionary().remove(pKey);
+
     }
 
     void add(String pKey, MyHtml pValue)
     {
         if (!CacheDictionary.containsKey(pKey)) {
             CacheDictionary.put(pKey, pValue);
-            setChanged();
-            this.notifyObservers(pValue);
+            notifyToInterface(pKey);
         }
     }
 
-    public Hashtable<String, MyHtml> getCacheDictionary() {
+
+    Hashtable<String, MyHtml> getCacheDictionary() {
         return CacheDictionary;
+    }
+
+    void notifyToInterface(String pKey)
+    {
+        setChanged();
+        this.notifyObservers(CacheDictionary.get(pKey));
     }
 }
 

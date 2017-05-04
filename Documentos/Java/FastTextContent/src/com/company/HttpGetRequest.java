@@ -12,56 +12,69 @@ class HttpGetRequest extends Thread
 
     public void run()
     {
+        long time_start, time_end;
+        time_start = System.currentTimeMillis();
 
         String url = "http://www.google.com/search?q=" + StringToFind;               // Url con la que llamamos al Google
-        try {
-            long time_start, time_end;
-            time_start = System.currentTimeMillis();
 
-            sleep(1);
-            URL obj = new URL(url);                                             // Objeto URL
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        if (!CacheMemory.getInstance().getCacheDictionary().containsKey(StringToFind)) {
+            try {
+                URL obj = new URL(url);                                             // Objeto URL
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-            // optional default is GET
-            con.setRequestMethod("GET");                                        // Pedimos la info del servidor
+                // optional default is GET
+                con.setRequestMethod("GET");                                        // Pedimos la info del servidor
 
-            //add request header
-            String USER_AGENT = "Mozilla/5.0";
-            con.setRequestProperty("User-Agent", USER_AGENT);                // Le enviamos la info del "Navegador"
+                //add request header
+                String USER_AGENT = "Mozilla/5.0";
+                con.setRequestProperty("User-Agent", USER_AGENT);                // Le enviamos la info del "Navegador"
 
-            int responseCode = con.getResponseCode();                           // Obtenemos lo que devuelve Google
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
+                int responseCode = con.getResponseCode();                           // Obtenemos lo que devuelve Google
+                System.out.println("\nSending 'GET' request to URL : " + url);
+                System.out.println("Response Code : " + responseCode);
 
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
 
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                response.delete(1, 10);
+
+                // Generando un objeto html
+                MyHtml tmp = new MyHtml();
+                tmp.setName(StringToFind);
+                tmp.setHtml(response.toString());
+
+                time_end = System.currentTimeMillis();
+                long horatmp = time_end - time_start;
+//                System.out.println(horatmp);
+                tmp.setTiempo(horatmp);
+
+                CacheMemory cache = CacheMemory.getInstance();
+                cache.add(StringToFind, tmp);
+
+                //print result
+//                System.out.println(response.toString());
             }
-            in.close();
-            response.delete(1,10);
-
-            // Generando un objeto html
-            MyHtml tmp = new MyHtml();
-            tmp.setName(StringToFind);
-            tmp.setHtml(response.toString());
-
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            MyHtml tmp = CacheMemory.getInstance().get(StringToFind);
             time_end = System.currentTimeMillis();
             long horatmp = time_end - time_start;
-            System.out.println(horatmp);
+//                System.out.println(horatmp);
             tmp.setTiempo(horatmp);
+            CacheMemory.getInstance().add(StringToFind, tmp);
 
-            CacheMemory cache = CacheMemory.getInstance();
-            cache.add(StringToFind, tmp);
-
-            //print result
-            System.out.println(response.toString());
-        }catch(IOException | InterruptedException e)
-        {
-            e.printStackTrace();
+//            CacheMemory.getInstance().notifyToInterface(StringToFind);
         }
 
     }
